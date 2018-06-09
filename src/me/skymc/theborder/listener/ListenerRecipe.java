@@ -23,7 +23,7 @@ public class ListenerRecipe implements Listener {
             }
 
             if ((localMaterial == Material.WOOD_PICKAXE) || (localMaterial == Material.STONE_PICKAXE)) {
-                localCraftingInventory.setResult(createItemStack(Material.IRON_PICKAXE, Enchantment.DIG_SPEED, 1));
+                localCraftingInventory.setResult(createItemStack(Material.IRON_PICKAXE, Enchantment.DIG_SPEED, 3));
             }
 
             if ((localMaterial == Material.WOOD_SPADE) || (localMaterial == Material.STONE_SPADE)) {
@@ -31,15 +31,15 @@ public class ListenerRecipe implements Listener {
             }
 
             if (localMaterial == Material.IRON_AXE) {
-                localCraftingInventory.setResult(createItemStack(Material.DIAMOND_AXE, Enchantment.DIG_SPEED, 2));
+                localCraftingInventory.setResult(createItemStack(Material.DIAMOND_AXE, Enchantment.DIG_SPEED, 5));
             }
 
             if (localMaterial == Material.IRON_PICKAXE) {
-                localCraftingInventory.setResult(createItemStack(Material.DIAMOND_PICKAXE, Enchantment.DIG_SPEED, 2));
+                localCraftingInventory.setResult(createItemStack(Material.DIAMOND_PICKAXE, Enchantment.DIG_SPEED, 5));
             }
 
             if (localMaterial == Material.IRON_SPADE) {
-                localCraftingInventory.setResult(createItemStack(Material.DIAMOND_SPADE, Enchantment.DIG_SPEED, 2));
+                localCraftingInventory.setResult(createItemStack(Material.DIAMOND_SPADE, Enchantment.DIG_SPEED, 5));
             }
         }
     }

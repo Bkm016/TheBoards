@@ -40,8 +40,8 @@ public class BorderGame {
         for (Player player : Bukkit.getOnlinePlayers().stream().filter(x -> x.getGameMode() == GameMode.SURVIVAL).collect(Collectors.toList())) {
             player.getInventory().clear();
 
-            Location randomLocation = new Location(Bukkit.getWorld("world"), random.nextInt(150), 140.0D, -random.nextInt(150));
-            player.teleport(randomLocation);
+            Location randomLocation = new Location(Bukkit.getWorld("world"), random.nextInt(200), 140.0D, -random.nextInt(200));
+            player.teleport(randomLocation.getWorld().getHighestBlockAt(randomLocation).getLocation().add(0, 3, 0));
 
             if (hardMode) {
                 player.setMaxHealth(60);
@@ -143,7 +143,7 @@ public class BorderGame {
                     Bukkit.getOnlinePlayers().forEach(player -> TitleUtils.sendTitle(player, SettingHandler.getString("messages.title.warningPrefix"), SettingHandler.getString("messages.title.borderY_increase"), 10, 60, 10));
                 }
 
-                if (BorderState.getState() == BorderState.GAME) {
+                if (BorderState.getState() == BorderState.GAME || BorderState.getState() == BorderState.GAME_PVP) {
                     new BukkitRunnable() {
                         @Override
                         public void run() {

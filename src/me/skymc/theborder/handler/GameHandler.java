@@ -11,15 +11,19 @@ import org.bukkit.entity.Player;
  */
 public class GameHandler {
 
+    private static boolean rewarded = false;
+
     public static void checkWin() {
         if (TheBorders.getPlayerInGame().isEmpty()) {
             stopGame(0);
         }
-
         if (TheBorders.getPlayerInGame().size() == 1) {
             String player = TheBorders.getPlayerInGame().get(0);
-            Bukkit.broadcastMessage(SettingHandler.getString("prefix") + SettingHandler.getString("messages.win_message").replace("<name>", player));
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "nl addxp " + player + " 1");
+            if (!rewarded) {
+                rewarded = true;
+                Bukkit.getOnlinePlayers().forEach(x -> x.sendMessage(SettingHandler.getString("prefix") + SettingHandler.getString("messages.win_message").replace("<name>", player)));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "nl addxp " + player + " 1");
+            }
             stopGame(3);
         }
     }

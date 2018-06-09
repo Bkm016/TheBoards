@@ -1,10 +1,18 @@
 package me.skymc.theborder.world.populator;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+
 import java.io.*;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class SchematicsManager {
+
     private byte[] blocks;
     private byte[] metadata;
     private short width;

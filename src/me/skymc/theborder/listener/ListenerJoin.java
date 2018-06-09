@@ -16,6 +16,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,11 +25,11 @@ public class ListenerJoin implements Listener {
 
     private static int timer = 0;
     private static List<Integer> timerCycle = Arrays.asList(30, 15, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
+    private static BukkitTask gameTask;
 
     public ListenerJoin() {
         timer = SettingHandler.getInt("timer.until_start_timer");
-
-        new BukkitRunnable() {
+        gameTask = new BukkitRunnable() {
 
             @Override
             public void run() {
@@ -39,7 +40,6 @@ public class ListenerJoin implements Listener {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.setLevel(timer);
                         player.setExp(1 - (float) ((double) timer / SettingHandler.getInt("timer.until_start_timer")));
-
                         if (timerCycle.contains(timer)) {
                             TitleUtils.sendTitle(player, "", SettingHandler.getString("messages.starting_game").replace("<time>", String.valueOf(timer)), 10, 20, 10);
                         }
@@ -48,7 +48,7 @@ public class ListenerJoin implements Listener {
                 if (timer == 0) {
                     cancel();
                     TheBorders.getBorderGame().start();
-                    Bukkit.getScheduler().runTaskLater(TheBorders.getInstance(), () -> deleteLobby(), 40);
+                    Bukkit.getScheduler().runTaskLater(TheBorders.getInstance(), () -> TheBorders.getInstance().deleteLobby(), 40);
                 }
             }
         }.runTaskTimer(TheBorders.getInstance(), 0, 20);
@@ -59,6 +59,9 @@ public class ListenerJoin implements Listener {
     public void preJoin(AsyncPlayerPreLoginEvent e) {
         if (!BorderState.isState(BorderState.WAIT)) {
             Player player = Bukkit.getPlayer(e.getUniqueId());
+            if (player == null) {
+                return;
+            }
             if (!TheBorders.getPlayerInGame().contains(player.getName())) {
                 e.setKickMessage("Game Already Start");
                 return;
@@ -108,33 +111,6 @@ public class ListenerJoin implements Listener {
         }
     }
 
-    private void deleteLobby() {
-        World localWorld = Bukkit.getWorld("world");
-        Location localLocation1 = new Location(localWorld, 0.0D, 130.0D, 0.0D);
-        Location localLocation2 = new Location(localWorld, 30.0D, 190.0D, 44.0D);
-
-        int i = Math.min(localLocation1.getBlockX(), localLocation2.getBlockX());
-        int j = Math.min(localLocation1.getBlockY(), localLocation2.getBlockY());
-        int k = Math.min(localLocation1.getBlockZ(), localLocation2.getBlockZ());
-        int m = Math.max(localLocation1.getBlockX(), localLocation2.getBlockX());
-        int n = Math.max(localLocation1.getBlockY(), localLocation2.getBlockY());
-        int i1 = Math.max(localLocation1.getBlockZ(), localLocation2.getBlockZ());
-
-        for (int i2 = i; i2 <= m; i2++) {
-            for (int i3 = j; i3 <= n; i3++) {
-                for (int i4 = k; i4 <= i1; i4++) {
-                    Block localBlock = localWorld.getBlockAt(i2, i3, i4);
-                    localBlock.setType(Material.AIR);
-                    for (Entity localEntity : localWorld.getEntities()) {
-                        if ((localEntity instanceof org.bukkit.entity.Item)) {
-                            localEntity.remove();
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     // *********************************
     //
     //        Getter and Setter
@@ -147,5 +123,13 @@ public class ListenerJoin implements Listener {
 
     public static void setTimer(int timer) {
         ListenerJoin.timer = timer;
+    }
+
+    public static List<Integer> getTimerCycle() {
+        return timerCycle;
+    }
+
+    public static BukkitTask getGameTask() {
+        return gameTask;
     }
 }
