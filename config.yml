@@ -1,0 +1,110 @@
+prefix: '&7[&c&lThe Borders&7]'
+scoreboards:
+  prefix: '&c&lTheBorders'
+  waiting:
+  - '&8'
+  - '&7Players: '
+  - '<playersAmount>'
+  - '&e'
+  - '&7Starting in: '
+  - '<timer>'
+  - '&a'
+  - '&eplay.servername.fr'
+  game:
+  - '&8'
+  - '&7Players: '
+  - '<playersAmount>'
+  - '&e'
+  - '&7PvP in: '
+  - '<timer>'
+  - '&2'
+  - '&7Borders X / Z'
+  - '<XZborderSize>'
+  - '&a'
+  - '&7Borders Y'
+  - '<YborderSize>'
+  - '&6'
+  - '&eplay.servername.fr'
+bungee:
+  enable: true
+  hubName: hub 
+customizableDrops:
+  item1:
+    type: IRON_ORE
+    drops:
+    - IRON_INGOT,2
+    - TNT,1
+  item2:
+    type: TNT
+    drops:
+    - WOOL:14,9
+  item3:
+    type: GRAVEL
+    drops:
+    - ARROW,2
+  item4:
+    type: SUGAR_CANE_BLOCK
+    drops:
+    - BOOK,2
+  item5:
+    type: LONG_GRASS
+    drops:
+    - WHEAT,1
+mobDrops:
+  mob1:
+    type: HORSE
+    drops:
+    - IRON_INGOT,2
+    - TNT,1
+  mob2:
+    type: PIG
+    drops:
+    - WOOL:14,9
+timer:
+  until_start_timer: 30
+  damage_protection_timer: 30
+startingBonus: 
+  speedBonus: true
+  speedBonusTime: 60
+gameBonus:
+  miningObsiHasteBonus: true
+  miningObsiHasteBonusTimeInSec: 10
+border: 
+  y_border_enable: true
+  default_border_xz_size: 750
+  default_border_y_size: 0
+  min_border_xz_size: 50
+  max_bordery_size: 100
+  timer: 
+    start_decreasexz_timer: 60
+    start_increase_y_timer: 120
+    start_pvp_timer: 120
+  damage:
+    y_border_damage: 1.5
+    xz_border_damage: 3.0
+    xz_warning_distance: 10
+options:
+  auto_leaf_decay: true
+  waitingRoomTeleport: true
+  deleteWorldWhenGameRestart: true
+  respawnInstant: true
+  instantKillPassiveMobs: true
+  shutdownServer: true
+  min_players: 1
+blockGeneration:
+  floor_blocks_amount: 200
+messages:
+  starting_game: '&eGame will starting in <time>s'
+  started_game: '&eGame Starting !'
+  stop_server: '&eGame Restarting !'
+  death_message: '&7<name> &celiminated !'
+  win_message: '&7<name> &ahas Won the Game !'
+  join_msg: '&7<player> joined the game ! <&a<online>&7/&a<maxonline>&7>'
+  title:
+    warningPrefix: '&cWarning'
+    borderY_increase: '&7Y Borders Increase !!!'
+    borderXZ_decrease: '&7X & Z Borders Increase !!!'
+    pvp_actionbar: '§ePvP On in : &6<time> &es'
+    pvp_on: '&cPvP On !'
+    damage_actionbar: '§eDamage On in : &6<time> &es'
+    damage_on: '&cDamage On !'

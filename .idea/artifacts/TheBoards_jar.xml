@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TheBoards:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TheBoards_jar</output-path>
+    <root id="archive" name="TheBoards.jar">
+      <element id="module-output" name="TheBoards" />
+      <element id="file-copy" path="$PROJECT_DIR$/config.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/Lobby.schematic" />
+      <element id="file-copy" path="$PROJECT_DIR$/Nether.schematic" />
+      <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,6 @@
+name: TheBorders
+version: 1.2
+main: me.skymc.theborder.TheBorders
+load: STARTUP
+
+author: [Gravenilvec, 坏黑]
