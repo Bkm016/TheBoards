@@ -12,6 +12,8 @@ public class BorderHandler {
     public static double y = 0.0D;
     public static boolean startedX;
     public static boolean startedY;
+    public static boolean startedSanctions;
+    public static boolean forceStart;
 
     public static void decreaseBorder() {
         startedX = true;
@@ -24,14 +26,14 @@ public class BorderHandler {
             @Override
             public void run() {
                 if (localWorldBorder.getSize() > SettingHandler.getDouble("border.min_border_xz_size")) {
-                    localWorldBorder.setSize(localWorldBorder.getSize() - 0.05D);
+                    localWorldBorder.setSize(localWorldBorder.getSize() - 0.025D);
                 }
             }
         }.runTaskTimerAsynchronously(TheBorders.getInstance(), 0, 1);
     }
 
     public static double getBorder() {
-        return Double.valueOf(Bukkit.getWorld("world").getWorldBorder().getSize()).intValue();
+        return Math.ceil(Bukkit.getWorld("world").getWorldBorder().getSize());
     }
 
     public static void setBorder(double paramDouble) {
@@ -44,9 +46,3 @@ public class BorderHandler {
         }
     }
 }
-
-
-/* Location:              C:\Users\sky\Desktop\TheBorders .jar!\net\gravenilvec\handler\BorderHandler.class
- * Java compiler version: 7 (51.0)
- * JD-Core Version:       0.7.1
- */

@@ -15,6 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -57,8 +58,8 @@ public class BorderGame {
 
             player.playSound(player.getLocation(), Sound.ENDERDRAGON_DEATH, 1f, 1f);
             player.setHealth(player.getMaxHealth());
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60 * 20, 1));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 120 * 20, 2));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 120 * 20, 1));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 60 * 20, 0));
             player.setCompassTarget(TheBorders.getSpawnLocation());
 
             player.getInventory().addItem(new ItemStack(Material.STONE_SWORD));
@@ -93,7 +94,7 @@ public class BorderGame {
             if (BorderGame.timer == SettingHandler.getInt("timer.damage_protection_timer")) {
                 BorderState.setState(BorderState.GAME);
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    TitleUtils.sendTitle(player, "", SettingHandler.getString("messages.title.damage_on"), 10, 60, 10);
+                    TitleUtils.sendTitle(player, SettingHandler.getString("messages.title.warningPrefix"), SettingHandler.getString("messages.title.damage_on"), 10, 60, 10);
                 }
             }
 
@@ -115,50 +116,62 @@ public class BorderGame {
 
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.playSound(player.getLocation(), Sound.WITHER_SPAWN, 1f, 1f);
-                    TitleUtils.sendTitle(player, "", SettingHandler.getString("messages.title.pvp_on"), 10, 60, 10);
+                    TitleUtils.sendTitle(player, SettingHandler.getString("messages.title.warningPrefix"), SettingHandler.getString("messages.title.pvp_on"), 10, 60, 10);
                 }
             }
 
-            checkBorderY();
-            checkGameMode();
+            if (timer >= SettingHandler.getInt("border.timer.start_sanctions_timer")) {
+                if (!BorderHandler.startedSanctions) {
+                    BorderHandler.startedSanctions = true;
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.playSound(player.getLocation(), Sound.WITHER_SPAWN, 1f, 1f);
+                        TitleUtils.sendTitle(player, SettingHandler.getString("messages.title.warningPrefix"), SettingHandler.getString("messages.title.sanctions_started"), 10, 60, 10);
+                    }
+                } else {
+                    List<Player> playerEffective = Bukkit.getOnlinePlayers().stream().filter(x -> x.getGameMode() == GameMode.SURVIVAL).collect(Collectors.toList());
+                    Player player = playerEffective.get(random.nextInt(playerEffective.size()));
+                    player.getWorld().strikeLightning(player.getLocation());
+                }
+            }
 
-            GameHandler.checkWin();
+            if (SettingHandler.getBoolean("border.y_border_enable")) {
+                if ((BorderHandler.getBorder() <= SettingHandler.getInt("border.timer.start_increasey_on_limitxz")) && (BorderGame.timer > 0)) {
+                    if (!BorderHandler.startedY) {
+                        BorderHandler.startedY = true;
+                        Bukkit.getOnlinePlayers().forEach(player -> TitleUtils.sendTitle(player, SettingHandler.getString("messages.title.warningPrefix"), SettingHandler.getString("messages.title.borderY_increase"), 10, 60, 10));
+                    }
+
+                    if (BorderState.getState() == BorderState.GAME || BorderState.getState() == BorderState.GAME_PVP) {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                for (Player player : Bukkit.getOnlinePlayers().stream().filter(player -> player.getGameMode() == GameMode.SURVIVAL && player.getLocation().getY() < BorderHandler.y).collect(Collectors.toList())) {
+                                    TitleUtils.sendTitle(player, "", "§4你不在安全区域!", 0, 20, 0);
+                                    player.damage(TheBorders.getInstance().getConfig().getDouble("border.damage.y_border_damage"));
+                                }
+                            }
+                        }.runTask(TheBorders.getInstance());
+                    }
+
+                    if (BorderHandler.y <= SettingHandler.getDouble("border.max_bordery_size")) {
+                        BorderHandler.y += 0.5D;
+                    }
+
+                    Bukkit.getOnlinePlayers().forEach(player -> displayBoardY(player, BorderHandler.y));
+                }
+            }
+
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.getGameMode() == GameMode.SPECTATOR) {
+                    ActionUtils.send(player, "§f你已被淘汰, 使用 §e/hub §f返回游戏大厅");
+                    TheBorders.getPlayerInGame().remove(player.getName());
+                }
+            }
+
+            if (!BorderHandler.forceStart) {
+                GameHandler.checkWin();
+            }
         }, 20L, 20L);
-    }
-
-    private void checkGameMode() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getGameMode() == GameMode.SPECTATOR) {
-                ActionUtils.send(player, "§f你已被淘汰, 使用 §e/hub §f返回游戏大厅");
-                TheBorders.getPlayerInGame().remove(player.getName());
-            }
-        }
-    }
-
-    private void checkBorderY() {
-        if (SettingHandler.getBoolean("border.y_border_enable")) {
-            if ((BorderHandler.getBorder() <= SettingHandler.getInt("border.timer.start_increase_y_timer")) && (BorderGame.timer > 0)) {
-                if (!BorderHandler.startedY) {
-                    BorderHandler.startedY = true;
-                    Bukkit.getOnlinePlayers().forEach(player -> TitleUtils.sendTitle(player, SettingHandler.getString("messages.title.warningPrefix"), SettingHandler.getString("messages.title.borderY_increase"), 10, 60, 10));
-                }
-
-                if (BorderState.getState() == BorderState.GAME || BorderState.getState() == BorderState.GAME_PVP) {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            Bukkit.getOnlinePlayers().stream().filter(player -> player.getGameMode() == GameMode.SURVIVAL).forEach(player -> player.damage(TheBorders.getInstance().getConfig().getDouble("border.damage.y_border_damage")));
-                        }
-                    }.runTask(TheBorders.getInstance());
-                }
-
-                if (BorderHandler.y <= SettingHandler.getDouble("border.max_bordery_size")) {
-                    BorderHandler.y += 1.0D;
-                }
-
-                Bukkit.getOnlinePlayers().forEach(player -> displayBoardY(player, BorderHandler.y));
-            }
-        }
     }
 
     private void displayBoardY(Player player, double y) {

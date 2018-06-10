@@ -1,110 +1,86 @@
-prefix: '&7[&c&lThe Borders&7]'
+prefix: '&6&lHuaJiCheng &8> '
 scoreboards:
-  prefix: '&c&lTheBorders'
+  prefix: '&6&l极限生存'
   waiting:
-  - '&8'
-  - '&7Players: '
-  - '<playersAmount>'
-  - '&e'
-  - '&7Starting in: '
-  - '<timer>'
-  - '&a'
-  - '&eplay.servername.fr'
+  - '&1'
+  - ' &7&k|&r &f状态: &a等待中'
+  - '&2'
+  - ' &7&k|&r &f模式: &e随机'
+  - ' &7&k|&r &f玩家: &e<playersAmount>&f/&e48'
+  - '&3'
+  - ' &f游戏将在 &e<timer> &f秒后开始...'
+  - '&4'
+  - '&e 110mc.cn @ 2018'
   game:
   - '&8'
-  - '&7Players: '
-  - '<playersAmount>'
-  - '&e'
-  - '&7PvP in: '
-  - '<timer>'
-  - '&2'
-  - '&7Borders X / Z'
-  - '<XZborderSize>'
-  - '&a'
-  - '&7Borders Y'
-  - '<YborderSize>'
+  - ' &7&k|&r &f存活: &e<playersAmount>'
+  - ' &7&k|&r &f模式: &e<gameMode>'
+  - '&7'
+  - ' &7&k|&r &f边界范围: &e<XZborderSize>'
+  - ' &7&k|&r &f边界高度: &e<YborderSize>'
   - '&6'
-  - '&eplay.servername.fr'
+  - '&e 110mc.cn @ 2018'
 bungee:
   enable: true
-  hubName: hub 
+  hubName: lobby_ghost
 customizableDrops:
-  item1:
-    type: IRON_ORE
+  IRON_ORE:
     drops:
-    - IRON_INGOT,2
-    - TNT,1
-  item2:
-    type: TNT
+    - IRON_INGOT,1
+    - TNT,1,0.5
+  GOLD_ORE:
     drops:
-    - WOOL:14,9
-  item3:
-    type: GRAVEL
+    - GOLD_INGOT,1
+    - GOLDEN_APPLE,1,0.5
+  SUGAR_CANE_BLOCK:
     drops:
-    - ARROW,2
-  item4:
-    type: SUGAR_CANE_BLOCK
+    - BOOK,1
+  LONG_GRASS:
     drops:
-    - BOOK,2
-  item5:
-    type: LONG_GRASS
-    drops:
-    - WHEAT,1
-mobDrops:
-  mob1:
-    type: HORSE
-    drops:
-    - IRON_INGOT,2
-    - TNT,1
-  mob2:
-    type: PIG
-    drops:
-    - WOOL:14,9
+    - BREAD,1,0.5
+mobDrops: {}
 timer:
-  until_start_timer: 30
+  until_start_timer: 60
   damage_protection_timer: 30
-startingBonus: 
-  speedBonus: true
-  speedBonusTime: 60
 gameBonus:
   miningObsiHasteBonus: true
   miningObsiHasteBonusTimeInSec: 10
-border: 
+border:
   y_border_enable: true
-  default_border_xz_size: 750
+  default_border_xz_size: 600
   default_border_y_size: 0
-  min_border_xz_size: 50
-  max_bordery_size: 100
-  timer: 
+  min_border_xz_size: 10
+  max_bordery_size: 200
+  timer:
     start_decreasexz_timer: 60
-    start_increase_y_timer: 120
+    start_increasey_on_limitxz: 50
     start_pvp_timer: 120
+    start_sanctions_timer: 1800
   damage:
     y_border_damage: 1.5
     xz_border_damage: 3.0
     xz_warning_distance: 10
 options:
-  auto_leaf_decay: true
   waitingRoomTeleport: true
   deleteWorldWhenGameRestart: true
-  respawnInstant: true
   instantKillPassiveMobs: true
   shutdownServer: true
-  min_players: 1
+  min_players: 8
 blockGeneration:
   floor_blocks_amount: 200
 messages:
-  starting_game: '&eGame will starting in <time>s'
-  started_game: '&eGame Starting !'
-  stop_server: '&eGame Restarting !'
-  death_message: '&7<name> &celiminated !'
-  win_message: '&7<name> &ahas Won the Game !'
-  join_msg: '&7<player> joined the game ! <&a<online>&7/&a<maxonline>&7>'
+  starting_game: '&f游戏将在 &e<time> &f秒后开始'
+  started_game: '&e游戏开始!'
+  stop_server: '&e游戏结束!'
+  death_message: '&7<name> &c淘汰 !'
+  win_message: '&7<name> &a胜利 !'
+  join_msg: '&7<player> 加入游戏! (&a<online>&7/&a<maxonline>&7)'
   title:
-    warningPrefix: '&cWarning'
-    borderY_increase: '&7Y Borders Increase !!!'
-    borderXZ_decrease: '&7X & Z Borders Increase !!!'
-    pvp_actionbar: 'PvP On in : &6<time> &es'
-    pvp_on: '&cPvP On !'
-    damage_actionbar: 'Damage On in : &6<time> &es'
-    damage_on: '&cDamage On !'
+    warningPrefix: '&c注意'
+    borderY_increase: '&7纵向边界开始上升!'
+    borderXZ_decrease: '&7横向边界开始缩小!'
+    sanctions_started: '&7随机裁决开启!'
+    pvp_actionbar: '&f战斗保护结束将在 &e<time> &f秒后解除'
+    pvp_on: '&7战斗保护解除!'
+    damage_actionbar: '&f伤害保护将在 &e<time> &f秒后解除'
+    damage_on: '&7伤害保护解除!'

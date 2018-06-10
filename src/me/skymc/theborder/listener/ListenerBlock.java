@@ -6,6 +6,7 @@ import me.skymc.theborder.TheBorders;
 import me.skymc.theborder.game.BorderState;
 import me.skymc.theborder.handler.SettingHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.TNTPrimed;
@@ -47,6 +48,11 @@ public class ListenerBlock implements Listener {
     public void breakBlock(BlockBreakEvent e) {
         if (BorderState.isState(BorderState.WAIT)) {
             e.setCancelled(true);
+            return;
+        }
+
+        if (e.getBlock().getType().equals(Material.STONE)) {
+            e.getBlock().setData((byte) 0);
             return;
         }
 

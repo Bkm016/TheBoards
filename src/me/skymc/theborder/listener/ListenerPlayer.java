@@ -7,6 +7,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
@@ -75,13 +76,10 @@ public class ListenerPlayer implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if (e.getClickedBlock() == null) {
-            return;
-        }
-        if (e.getClickedBlock().getType() == Material.OBSIDIAN && SettingHandler.getBoolean("gameBonus.miningObsiHasteBonus")) {
-            e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, SettingHandler.getInt("gameBonus.miningObsiHasteBonusTimeInSec") * 20, 3));
-        } else {
-            e.getPlayer().removePotionEffect(PotionEffectType.FAST_DIGGING);
+        if (e.getAction() == Action.LEFT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.OBSIDIAN) {
+            e.setCancelled(true);
+            e.getPlayer().getWorld().playEffect(e.getClickedBlock().getLocation(), Effect.STEP_SOUND, e.getClickedBlock().getType());
+            e.getClickedBlock().breakNaturally();
         }
     }
 

@@ -2,7 +2,7 @@ package me.skymc.theborder;
 
 import me.skymc.theborder.game.BorderGame;
 import me.skymc.theborder.game.BorderState;
-import me.skymc.theborder.handler.GameHandler;
+import me.skymc.theborder.handler.BorderHandler;
 import me.skymc.theborder.handler.ScoreboardHandler;
 import me.skymc.theborder.handler.SettingHandler;
 import me.skymc.theborder.listener.*;
@@ -54,7 +54,7 @@ public class TheBorders extends org.bukkit.plugin.java.JavaPlugin {
         new BukkitRunnable() {
             @Override
             public void run() {
-                spawnLocation = new Location(Bukkit.getWorld("world"), 12.0D, 165.0D, 13.0D);
+                spawnLocation = new Location(Bukkit.getWorld("world"), 13, 163, 14);
                 BorderState.setState(BorderState.WAIT);
             }
         }.runTask(this);
@@ -83,13 +83,12 @@ public class TheBorders extends org.bukkit.plugin.java.JavaPlugin {
         if (args.length == 0) {
             sender.sendMessage("§7[TheBorders] §f/theborders start §8- §7强制开局");
             sender.sendMessage("§7[TheBorders] §f/theborders reload §8- §7重载插件");
-        }
-        else if (args[0].equalsIgnoreCase("start")) {
+        } else if (args[0].equalsIgnoreCase("start")) {
+            BorderHandler.forceStart = true;
             ListenerJoin.getGameTask().cancel();
             TheBorders.getBorderGame().start();
             Bukkit.getScheduler().runTaskLater(TheBorders.getInstance(), this::deleteLobby, 40);
-        }
-        else if (args[0].equalsIgnoreCase("reload")) {
+        } else if (args[0].equalsIgnoreCase("reload")) {
             reloadConfig();
             sender.sendMessage("reload ok!");
         }
